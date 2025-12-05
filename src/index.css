@@ -13,6 +13,22 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+ul {
+  list-style: none;
+  padding-left: 0;
+
+  li {
+    color: #000;
+    padding: 6px 18px;
+    border: 1px solid #fff;
+    border-radius: 6px;
+
+    &:not(:last-child) {
+      margin-bottom: 18px;
+    }
+  }
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -23,7 +39,6 @@ a:hover {
 }
 
 body {
-  margin: 0;
   display: flex;
   place-items: center;
   min-width: 320px;
@@ -57,7 +72,12 @@ button:focus-visible {
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
-    background-color: #ffffff;
+    background-color: #fff;
+  }
+  ul{
+    li {
+      border: 1px solid #000;
+    }
   }
   a:hover {
     color: #747bff;
