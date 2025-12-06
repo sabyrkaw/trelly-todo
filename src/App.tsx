@@ -4,6 +4,7 @@ const priorities = ['#fff', '#ffd7b5', '#ffb38a', '#ff9248', '#ff6700']
 
 function App() {
   const [selectedTaskId, setSelectedTaskId] = useState(null)
+  const [selectedTask, setSelectedTask] = useState(null)
   const [tasks, setTasks] = useState(null)
 
   useEffect(() => {
@@ -21,44 +22,57 @@ function App() {
 
   return (
     <>
-      <button onClick={() => setSelectedTaskId(null)}>
+      <button onClick={() => {
+        setSelectedTaskId(null)
+        setSelectedTask(null)
+      }}>
         Сбросить выделение
       </button>
 
-      <ul>
-        {tasks.map((task) => (
-          <li
-            key={task.id}
-            onClick={() => setSelectedTaskId(task.id)}
-            style={{
-              backgroundColor: priorities[task.attributes.priority],
-              border: `2px solid ${task.id === selectedTaskId ? 'blue' : 'transparent'}`,
-            }}
-          >
-            <p>
-              <b>Заголовок: </b>
-              <span
-                style={{
-                  textDecorationLine: task.attributes.status ? 'line-through' : 'none',
-                }}
-              >
+      <div style={{ display: 'flex', columnGap: '30px' }}>
+        <ul>
+          {tasks.map((task) => (
+            <li
+              key={task.id}
+              onClick={() => {
+                setSelectedTaskId(task.id)
+                setSelectedTask(task)
+              }}
+              style={{
+                backgroundColor: priorities[task.attributes.priority],
+                border: `2px solid ${task.id === selectedTaskId ? 'blue' : 'transparent'}`,
+              }}
+            >
+              <p>
+                <b>Заголовок: </b>
+                <span
+                  style={{
+                    textDecorationLine: task.attributes.status ? 'line-through' : 'none',
+                  }}
+                >
               {task.attributes.title}
             </span>
-            </p>
-            <p>
-              <b>Статус: </b>
-              <input
-                type="checkbox"
-                defaultChecked={task.attributes.status}
-              />
-            </p>
-            <p>
-              <b>Дата создания задачи: </b>
-              <span>{new Date(task.attributes.addedAt).toLocaleDateString()}</span>
-            </p>
-          </li>
-        ))}
-      </ul>
+              </p>
+              <p>
+                <b>Статус: </b>
+                <input
+                  type="checkbox"
+                  defaultChecked={task.attributes.status}
+                />
+              </p>
+              <p>
+                <b>Дата создания задачи: </b>
+                <span>{new Date(task.attributes.addedAt).toLocaleDateString()}</span>
+              </p>
+            </li>
+          ))}
+        </ul>
+        <div>
+          <h2>Task details</h2>
+
+          {selectedTask ? selectedTask.attributes.title : 'Task is not selected'}
+        </div>
+      </div>
     </>
   )
 }
