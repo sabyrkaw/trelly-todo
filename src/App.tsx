@@ -22,10 +22,12 @@ function App() {
 
   return (
     <>
-      <button onClick={() => {
-        setSelectedTaskId(null)
-        setSelectedTask(null)
-      }}>
+      <button
+        onClick={() => {
+          setSelectedTaskId(null)
+          setSelectedTask(null)
+        }}
+      >
         Сбросить выделение
       </button>
 
@@ -35,8 +37,20 @@ function App() {
             <li
               key={task.id}
               onClick={() => {
+                const boardId = task.attributes.boardId
+
                 setSelectedTaskId(task.id)
-                setSelectedTask(task)
+                setSelectedTask(null)
+
+                fetch(
+                  `https://trelly.it-incubator.app/api/1.0/boards/${boardId}/tasks/${task.id}`,
+                  {
+                    headers: {
+                      'api-key': import.meta.env.VITE_API_KEY,
+                    },
+                  },
+                ).then(res => res.json())
+                  .then(task => setSelectedTask(task.data))
               }}
               style={{
                 backgroundColor: priorities[task.attributes.priority],
@@ -70,7 +84,22 @@ function App() {
         <div>
           <h2>Task details</h2>
 
-          {selectedTask ? selectedTask.attributes.title : 'Task is not selected'}
+          {selectedTaskId === null && 'Task is not selected'}
+          {selectedTaskId !== null && selectedTask === null && 'Loading...'}
+          {selectedTask && (
+            <>
+              <p>
+                <b>Title:</b> {selectedTask.attributes.title}
+              </p>
+              <p>
+                <b>Board:</b> {selectedTask.attributes.boardTitle}
+              </p>
+              <p>
+                <b>Description:</b>{' '}
+                {selectedTask.attributes.description || 'no description'}
+              </p>
+            </>
+          )}
         </div>
       </div>
     </>
