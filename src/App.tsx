@@ -5,6 +5,7 @@ const priorities = ['#fff', '#ffd7b5', '#ffb38a', '#ff9248', '#ff6700']
 function App() {
   const [selectedTaskId, setSelectedTaskId] = useState(null)
   const [selectedTask, setSelectedTask] = useState(null)
+  const [boardId, setBoardId] = useState(null)
   const [tasks, setTasks] = useState(null)
 
   useEffect(() => {
@@ -16,6 +17,20 @@ function App() {
       .then((task) => setTasks(task.data))
   }, [])
 
+  useEffect(() => {
+    if (!selectedTaskId || !boardId) return
+
+    fetch(
+      `https://trelly.it-incubator.app/api/1.0/boards/${boardId}/tasks/${selectedTaskId}`,
+      {
+        headers: {
+          'api-key': import.meta.env.VITE_API_KEY,
+        },
+      },
+    ).then(res => res.json())
+      .then(task => setSelectedTask(task.data))
+  }, [selectedTaskId, boardId])
+
   if (tasks === null) return <h1>Загрузка...</h1>
 
   if (tasks.length === 0) return <h1>Задачи отсутствуют</h1>
@@ -26,6 +41,7 @@ function App() {
         onClick={() => {
           setSelectedTaskId(null)
           setSelectedTask(null)
+          setBoardId(null)
         }}
       >
         Сбросить выделение
@@ -37,20 +53,9 @@ function App() {
             <li
               key={task.id}
               onClick={() => {
-                const boardId = task.attributes.boardId
-
                 setSelectedTaskId(task.id)
+                setBoardId(task.attributes.boardId)
                 setSelectedTask(null)
-
-                fetch(
-                  `https://trelly.it-incubator.app/api/1.0/boards/${boardId}/tasks/${task.id}`,
-                  {
-                    headers: {
-                      'api-key': import.meta.env.VITE_API_KEY,
-                    },
-                  },
-                ).then(res => res.json())
-                  .then(task => setSelectedTask(task.data))
               }}
               style={{
                 backgroundColor: priorities[task.attributes.priority],
