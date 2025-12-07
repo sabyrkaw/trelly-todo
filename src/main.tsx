@@ -6,12 +6,13 @@ import { PageTitle } from './components/PageTitle.tsx'
 import { TaskList } from './components/TaskList.tsx'
 import { TaskDetails } from './components/TaskDetails.tsx'
 import { Footer } from './components/Footer.tsx'
-import { Users } from './components/Users.tsx'
-// import App from './App.tsx'
+// import { Users } from './components/Users.tsx'
+import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Users />
+    <App />
+    {/*<Users />*/}
     {/*<MainPage />*/}
   </StrictMode>,
 )

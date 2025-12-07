@@ -1,9 +1,24 @@
-import { useEffect, useState } from 'react'
+// import { useEffect, useState } from 'react'
 
-const priorities = ['#fff', '#ffd7b5', '#ffb38a', '#ff9248', '#ff6700']
+// const priorities = ['#fff', '#ffd7b5', '#ffb38a', '#ff9248', '#ff6700']
+
+import { ProductList } from './components/ProductList.tsx'
 
 function App() {
-  const [selectedTaskId, setSelectedTaskId] = useState(null)
+
+  const products = [
+    { id: 1, name: "Хлеб", price: 30, category: "Выпечка" },
+    { id: 2, name: "Молоко", price: 60, category: "Молочные" },
+    { id: 3, name: "Яблоки", price: 120, category: "Фрукты" },
+  ]
+
+  return (
+    <>
+      <ProductList items={products} />
+    </>
+  )
+
+  /*const [selectedTaskId, setSelectedTaskId] = useState(null)
   const [selectedTask, setSelectedTask] = useState(null)
   const [boardId, setBoardId] = useState(null)
   const [tasks, setTasks] = useState(null)
@@ -108,7 +123,7 @@ function App() {
         </div>
       </div>
     </>
-  )
+  )*/
 }
 
 export default App
